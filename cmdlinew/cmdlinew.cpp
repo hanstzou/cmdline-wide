@@ -120,6 +120,26 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[])
 	}
 
 
+	CLI::App app{ "App description" };
+
+	std::string filename = "default file";
+	int debug;
+	std::string name = "default name";
+	app.add_option("-f,--file", filename, "Input filename");
+	app.add_option("-f,--debug", debug, "The debug flag");
+	app.add_option("--name", name, "The name field");
+
+	try {
+		app.parse(std_args);
+	}
+	catch (const CLI::ParseError &e) {
+		wprintf(L"error\n");
+		return app.exit(e);
+	}
+
+	wprintf(L"debug: %d\n", debug);
+	wprintf(L"end\n");
+
 	/*
 	int WideCharToMultiByte(
 		UINT                               CodePage,
