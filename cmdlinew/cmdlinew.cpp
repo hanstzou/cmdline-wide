@@ -54,7 +54,7 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[])
 	const int MAX_ARG_LEN = 32767;
 	char szArgBuffer[MAX_ARG_LEN];
 	std::vector<std::string> std_args;
-	for (int i = 0; i < argc; ++i) {
+	for (int i = 1; i < argc; ++i) {
 		wprintf(L"  ## arg %d: ", i);
 		WideCharToMultiByte(
 			CP_UTF8,
@@ -126,7 +126,7 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[])
 	int debug;
 	std::string name = "default name";
 	app.add_option("-f,--file", filename, "Input filename");
-	app.add_option("-f,--debug", debug, "The debug flag");
+	app.add_option("-d,--debug", debug, "The debug flag");
 	app.add_option("--name", name, "The name field");
 
 	try {
