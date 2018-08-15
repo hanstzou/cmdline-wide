@@ -1,0 +1,1 @@
+./cmdlinew.exe --file="中文 測試 abc" -d0 --name=好 問 > output.txt 2> error.txt
