@@ -8,6 +8,26 @@
 #include <fcntl.h>
 #include <io.h>
 #include <stdio.h>
+#include <wchar.h>
+
+int s2ws(std::string &str, std::wstring &wstr)
+{
+	int ret = 0;
+	const int MAX_ARG_LEN = 32767;
+	static wchar_t wcBuf[MAX_ARG_LEN];
+
+	ret = MultiByteToWideChar(
+		CP_UTF8,
+		0, // dwFlags: MBCS flags 0 for UTF8
+		str.c_str(),
+		-1, // cbMultiByte: null-terminated
+		wcBuf,
+		MAX_ARG_LEN
+	);
+	wstr = std::wstring(wcBuf);
+
+	return ret;
+}
 
 int wmain(int argc, wchar_t *argv[], wchar_t *envp[])
 {
@@ -133,8 +153,21 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[])
 		app.parse(std_args);
 	}
 	catch (const CLI::ParseError &e) {
-		wprintf(L"error\n");
-		return app.exit(e);
+		std::string strout;
+		std::string strerr;
+		std::wstring wstrout;
+		std::wstring wstrerr;
+		int exit_code = app.exit_info(e, strout, strerr);
+
+		s2ws(strout, wstrout);
+		s2ws(strerr, wstrerr);
+		//std::wcout << wstrout;
+		//std::wcerr << wstrerr << std::flush;
+		fwprintf(stdout, L"%ls\n", wstrout.c_str());
+		fwprintf(stderr, L"%ls\n", wstrerr.c_str());
+		wprintf(L"end except\n");
+
+		return exit_code;
 	}
 
 	wprintf(L"debug: %d\n", debug);
