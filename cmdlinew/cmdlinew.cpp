@@ -33,6 +33,7 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[])
 {
 	LPCWSTR wincmdline = GetCommandLine();
 	_setmode(_fileno(stdout), _O_U16TEXT);
+	_setmode(_fileno(stderr), _O_U16TEXT);
 
 	wprintf(L"# LPCWSTR\n");
 	size_t len = wcslen(wincmdline) * sizeof(wchar_t);
