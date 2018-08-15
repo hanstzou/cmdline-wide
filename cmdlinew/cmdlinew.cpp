@@ -154,14 +154,14 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[])
 		app.parse(std_args);
 	}
 	catch (const CLI::ParseError &e) {
-		std::string strout;
-		std::string strerr;
+		std::ostringstream ossout;
+		std::ostringstream osserr;
 		std::wstring wstrout;
 		std::wstring wstrerr;
-		int exit_code = app.exit_info(e, strout, strerr);
+		int exit_code = app.exit(e, ossout, osserr);
 
-		s2ws(strout, wstrout);
-		s2ws(strerr, wstrerr);
+		s2ws(ossout.str(), wstrout);
+		s2ws(osserr.str(), wstrerr);
 		//std::wcout << wstrout;
 		//std::wcerr << wstrerr << std::flush;
 		fwprintf(stdout, L"%ls\n", wstrout.c_str());
