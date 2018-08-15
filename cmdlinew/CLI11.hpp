@@ -3048,37 +3048,24 @@ namespace CLI {
 
 		/// Print a nice error message and return the exit code
 		int exit(const Error &e, std::ostream &out = std::cout, std::ostream &err = std::cerr) const {
-			std::string strout;
-			std::string strerr;
-			int exit_code = exit_info(e, strout, strerr);
-			out << strout;
-			err << strerr << std::flush;
-
-			return exit_code;
-		}
-
-		/// Implementation of exit, store help/failure message in std::string
-		int exit_info(const Error &e, std::string &strout, std::string &strerr) const {
-			strout.clear();
-			strerr.clear();
 
 			/// Avoid printing anything if this is a CLI::RuntimeError
 			if (dynamic_cast<const CLI::RuntimeError *>(&e) != nullptr)
 				return e.get_exit_code();
 
 			if (dynamic_cast<const CLI::CallForHelp *>(&e) != nullptr) {
-				strout = help();
+				out << help();
 				return e.get_exit_code();
 			}
 
 			if (dynamic_cast<const CLI::CallForAllHelp *>(&e) != nullptr) {
-				strout = help("", AppFormatMode::All);
+				out << help("", AppFormatMode::All);
 				return e.get_exit_code();
 			}
 
 			if (e.get_exit_code() != static_cast<int>(ExitCodes::Success)) {
 				if (failure_message_)
-					strerr = failure_message_(this, e);
+					err << failure_message_(this, e) << std::flush;
 			}
 
 			return e.get_exit_code();
