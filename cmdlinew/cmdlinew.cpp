@@ -32,8 +32,8 @@ int s2ws(std::string &str, std::wstring &wstr)
 int wmain(int argc, wchar_t *argv[], wchar_t *envp[])
 {
 	LPCWSTR wincmdline = GetCommandLine();
-	_setmode(_fileno(stdout), _O_U16TEXT);
-	_setmode(_fileno(stderr), _O_U16TEXT);
+	_setmode(_fileno(stdout), _O_WTEXT);
+	_setmode(_fileno(stderr), _O_WTEXT);
 
 	wprintf(L"# LPCWSTR\n");
 	size_t len = wcslen(wincmdline) * sizeof(wchar_t);
@@ -162,10 +162,10 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[])
 
 		s2ws(ossout.str(), wstrout);
 		s2ws(osserr.str(), wstrerr);
-		//std::wcout << wstrout;
-		//std::wcerr << wstrerr << std::flush;
-		fwprintf(stdout, L"%ls\n", wstrout.c_str());
-		fwprintf(stderr, L"%ls\n", wstrerr.c_str());
+		std::wcout << wstrout;
+		std::wcerr << wstrerr << std::flush;
+		//fwprintf(stdout, L"%ls\n", wstrout.c_str());
+		//fwprintf(stderr, L"%ls\n", wstrerr.c_str());
 		wprintf(L"end except\n");
 
 		return exit_code;
