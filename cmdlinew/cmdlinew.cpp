@@ -75,7 +75,7 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[])
 	const int MAX_ARG_LEN = 32767;
 	char szArgBuffer[MAX_ARG_LEN];
 	std::vector<std::string> std_args;
-	for (int i = 1; i < argc; ++i) {
+	for (int i = argc - 1; i > 0; --i) {
 		wprintf(L"  ## arg %d: ", i);
 		WideCharToMultiByte(
 			CP_UTF8,
@@ -101,7 +101,7 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[])
 	wprintf(L"\n");
 	wprintf(L"# UTF-8 std::string back to LPCWSTR\n");
 	wchar_t wcBuf[MAX_ARG_LEN];
-	int arg_i = 0;
+	int arg_i = std_args.size();
 	for (std::string tmp_arg : std_args) {
 		MultiByteToWideChar(
 			CP_UTF8,
@@ -117,7 +117,7 @@ int wmain(int argc, wchar_t *argv[], wchar_t *envp[])
 		for (size_t i = 0; i < len - 1; ++i)
 			wprintf(L"%x,", ptr[i]);
 		wprintf(L"%x\n", ptr[len - 1]);
-		++arg_i;
+		--arg_i;
 	}
 
 
